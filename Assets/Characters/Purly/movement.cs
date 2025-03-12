@@ -4,32 +4,33 @@ public class movement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float rotationSpeed = 100.0f;
-    [SerializeField] private GameObject Purly;
+    [SerializeField] private float maxSpeed = 10f;
+    private Rigidbody2D rb;
+    private Vector2 movementInput;
+    private float rotationInput;
 
     void Start()
     {
-
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        float translation = speed * Time.deltaTime;
-        float rotation = rotationSpeed * Time.deltaTime;
+        movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        rotationInput = Input.GetKey(KeyCode.Space) ? 1f : 0f;
+    }
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            Purly.transform.position += new Vector3(-translation, 0, 0);
+    void FixedUpdate()
+    {
+        Vector2 desiredVelocity = movementInput.normalized * speed;
+        Vector2 velocityChange = desiredVelocity - rb.linearVelocity;
+        velocityChange = Vector2.ClampMagnitude(velocityChange, 20 * Time.fixedDeltaTime);
+        rb.AddForce(velocityChange, ForceMode2D.Impulse);
 
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            Purly.transform.position += new Vector3(translation, 0, 0);
+        if (rb.linearVelocity.magnitude > maxSpeed)
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-            Purly.transform.position += new Vector3(0, translation, 0);
-
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-            Purly.transform.position += new Vector3(0, -translation, 0);
-
-
-        if (Input.GetKey(KeyCode.Space))
-            Purly.transform.Rotate(new Vector2(0, rotation));
+        if (rotationInput > 0)
+            transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
     }
 }
