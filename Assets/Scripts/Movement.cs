@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class movement : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float rotationSpeed = 100.0f;
@@ -9,7 +9,7 @@ public class movement : MonoBehaviour
     private Vector2 movementInput;
     private float rotationInput;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -32,5 +32,19 @@ public class movement : MonoBehaviour
 
         if (rotationInput > 0)
             transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+    }
+
+    public void SavePlayer(GameData data)
+    {
+        data.playerData.position = transform.position;
+        data.playerData.rotation = transform.rotation;
+        data.playerData.velocity = rb.linearVelocity;
+    }
+
+    public void LoadPlayer(ref GameData data)
+    {
+        transform.position = data.playerData.position;
+        transform.rotation = data.playerData.rotation;
+        rb.linearVelocity = data.playerData.velocity;
     }
 }
