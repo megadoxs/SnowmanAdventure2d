@@ -15,11 +15,6 @@ public class GameData
     {
         playerData = new PlayerData(userName);
         snowBallData = new SnowBallData();
-        balloonData = new BalloonData[4];
-        balloonData[0] = new BalloonData(BalloonPosition.HORIZONTAL, new Vector3(0, 3.75f), new Vector3(180, 0, 0));
-        balloonData[1] = new BalloonData(BalloonPosition.VERTICAL, new Vector3(8, 0), new Vector3(0, 0, 30));
-        balloonData[2] = new BalloonData(BalloonPosition.HORIZONTAL, new Vector3(0, -3.85f), Vector3.zero);
-        balloonData[3] = new BalloonData(BalloonPosition.VERTICAL, new Vector3(-8.6f, 0), new Vector3(0, 0, -30));
         launcherData = new LauncherData[2];
         launcherData[0] = new LauncherData(0);
         launcherData[1] = new LauncherData(1);
@@ -64,12 +59,10 @@ public class SnowBallData
 public class BalloonData
 {
     public Vector3 position;
-    [FormerlySerializedAs("balloon")] public BalloonPosition balloonPosition;
     public Vector3 rotation;
 
-    public BalloonData(BalloonPosition balloonPosition, Vector3 position, Vector3 rotation)
+    public BalloonData(Vector3 position, Vector3 rotation)
     {
-        this.balloonPosition = balloonPosition;
         this.position = position;
         this.rotation = rotation;
     }

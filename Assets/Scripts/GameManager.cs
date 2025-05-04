@@ -40,22 +40,9 @@ public class GameManager : MonoBehaviour
                   if(snowball != null)
                         snowball.SaveSnowBall(gameData);
 
-                  foreach (var balloonData in gameData.balloonData)
+                  foreach (var balloon in FindObjectsByType<Balloon>(FindObjectsSortMode.None))
                   {
-                        foreach (var balloon in FindObjectsByType<Balloon>(FindObjectsSortMode.None))
-                        {
-                              if (balloon.balloonPosition != balloonData.balloonPosition)
-                                    continue;
-
-                              Vector3 pos = balloon.transform.position;
-                              Vector3 target = balloonData.position;
-
-                              if ((balloon.balloonPosition == BalloonPosition.VERTICAL && Mathf.Approximately(pos.x, target.x)) ||
-                                  (balloon.balloonPosition == BalloonPosition.HORIZONTAL && Mathf.Approximately(pos.y, target.y)))
-                              {
-                                    balloonData.position = balloon.transform.position;
-                              }
-                        }
+                        //TODO save ballon location here?
                   }
 
                   for (var i = 0; i < gameData.launcherData.Length; i++) 
@@ -110,20 +97,7 @@ public class GameManager : MonoBehaviour
             
             foreach (var balloonData in gameData.balloonData)
             {
-                  foreach (var balloon in FindObjectsByType<Balloon>(FindObjectsSortMode.None))
-                  {
-                        if (balloon.balloonPosition != balloonData.balloonPosition)
-                              continue;
-
-                        Vector3 pos = balloon.transform.position;
-                        Vector3 target = balloonData.position;
-
-                        if ((balloon.balloonPosition == BalloonPosition.VERTICAL && Mathf.Approximately(pos.x, target.x)) ||
-                            (balloon.balloonPosition == BalloonPosition.HORIZONTAL && Mathf.Approximately(pos.y, target.y)))
-                        {
-                              balloon.transform.position = target;
-                        }
-                  }
+                  //TODO load ballons
             }
             
             for (var i = 0; i < gameData.launcherData.Length; i++) 

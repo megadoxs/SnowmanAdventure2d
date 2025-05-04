@@ -2,36 +2,54 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float rotationSpeed = 100.0f;
+    [Header("Movement Settings")]
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float jumpForce = 10f;
     [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.2f;
+
     private Rigidbody2D rb;
-    private Vector2 movementInput;
-    private float rotationInput;
+    private Animator animator;
+    private float horizontalInput;
+    private bool isJumpPressed;
+    private bool isGrounded;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        rotationInput = Input.GetKey(KeyCode.Space) ? 1f : 0f;
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            isJumpPressed = true;
+        }
     }
 
     void FixedUpdate()
     {
-        Vector2 desiredVelocity = movementInput.normalized * speed;
-        Vector2 velocityChange = desiredVelocity - rb.linearVelocity;
-        velocityChange = Vector2.ClampMagnitude(velocityChange, 20 * Time.fixedDeltaTime);
-        rb.AddForce(velocityChange, ForceMode2D.Impulse);
-
-        if (rb.linearVelocity.magnitude > maxSpeed)
-            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-
-        if (rotationInput > 0)
-            transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        
+        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        
+        if (isJumpPressed)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            isJumpPressed = false;
+            animator.SetTrigger("Jump");
+        }
+        
+        if (Mathf.Abs(rb.linearVelocity.x) > maxSpeed)
+        {
+            rb.linearVelocity = new Vector2(Mathf.Sign(rb.linearVelocity.x) * maxSpeed, rb.linearVelocity.y);
+        }
+        animator.SetFloat("X", rb.linearVelocity.x);
     }
 
     public void SavePlayer(GameData data)
