@@ -51,18 +51,4 @@ public class Movement : MonoBehaviour
         }
         animator.SetFloat("X", rb.linearVelocity.x);
     }
-
-    public void SavePlayer(GameData data)
-    {
-        data.playerData.position = transform.position;
-        data.playerData.rotation = transform.rotation;
-        data.playerData.velocity = rb.linearVelocity;
-    }
-
-    public void LoadPlayer(ref GameData data)
-    {
-        transform.position = data.playerData.position;
-        transform.rotation = data.playerData.rotation;
-        rb.linearVelocity = data.playerData.velocity;
-    }
 }

@@ -5,32 +5,21 @@ using Random = UnityEngine.Random;
 public class SnowLauncher : MonoBehaviour
 {
     public GameObject prefabToSpawn;
+    public Transform player;
     public Transform spawnPoint;
-    public float spawnInterval = 20f;
-    public float spawnDelay = 0;
     public float speed = 6.5f;
-
-    public float cooldown;
-    private void Awake()
-    {
-        cooldown = spawnDelay;
-    }
-
-    private void Update()
-    {
-        if (cooldown > 0)
-            cooldown = Math.Max(cooldown - Time.deltaTime, 0);
-        else
-        {
-            cooldown = spawnInterval;
-            SpawnObject();
-        }
-    }
-
-    private void SpawnObject()
+    public void Shot()
     {
         Rigidbody2D rb = Instantiate(prefabToSpawn, spawnPoint.position, Quaternion.identity).GetComponent<Rigidbody2D>();
-        float angle = Random.Range(180f, 270f);
-        rb.linearVelocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized * speed;
+        
+        Vector2 directionToPlayer = (player.position - spawnPoint.position).normalized;
+        
+        float angleOffset = Random.Range(-15f, 15f);
+        float baseAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+        float finalAngle = baseAngle + angleOffset;
+        
+        Vector2 shotDirection = new Vector2(Mathf.Cos(finalAngle * Mathf.Deg2Rad), Mathf.Sin(finalAngle * Mathf.Deg2Rad)).normalized;
+        
+        rb.linearVelocity = shotDirection * speed;
     }
 }

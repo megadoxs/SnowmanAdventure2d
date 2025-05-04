@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Balloon : MonoBehaviour
 {
@@ -8,8 +6,8 @@ public class Balloon : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            gameObject.SetActive(false);
             Score.instance.AddScore();
+            Destroy(gameObject);
         }
     }
 }

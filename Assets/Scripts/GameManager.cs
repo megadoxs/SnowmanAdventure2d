@@ -32,27 +32,7 @@ public class GameManager : MonoBehaviour
                   return;
             
             SaveScore();
-            if (GameObject.FindGameObjectWithTag("Player"))
-            {
-                  FindObjectsByType<Movement>(FindObjectsSortMode.None).First().SavePlayer(gameData);
-                  
-                  SnowBall snowball = FindObjectsByType<SnowBall>(FindObjectsSortMode.None).FirstOrDefault();
-                  if(snowball != null)
-                        snowball.SaveSnowBall(gameData);
-
-                  foreach (var balloon in FindObjectsByType<Balloon>(FindObjectsSortMode.None))
-                  {
-                        //TODO save ballon location here?
-                  }
-
-                  for (var i = 0; i < gameData.launcherData.Length; i++) 
-                  { 
-                        gameData.launcherData[i].cooldown = FindObjectsByType<SnowLauncher>(FindObjectsSortMode.None)[i].cooldown;
-                  }
-                  
-                  FileDataHandler.instance.SaveGame(gameData);
-            }
-            else if (gameData.playerData.score != 0)
+            if (gameData.playerData.score != 0)
             {
                   FileDataHandler.instance.SaveScore(gameData.playerData.userName, gameData.playerData.score);
                   FileDataHandler.instance.DeleteGameSave();
@@ -80,7 +60,7 @@ public class GameManager : MonoBehaviour
 
       public void NewGame()
       {
-            if (userName != null)
+            if (userName != "")
                   gameData = new GameData(userName);
             else
                   gameData = new GameData("Anonymous");
@@ -90,19 +70,6 @@ public class GameManager : MonoBehaviour
 
       private void LoadGameData()
       {
-            FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<Movement>().First().LoadPlayer(ref gameData);
             FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<Score>().First().LoadScore(ref gameData);
-            if(gameData.snowBallData.lifeTime != 0)
-                  Instantiate(SnowBallPrefab).GetComponent<SnowBall>().LoadSnowBall(ref gameData);
-            
-            foreach (var balloonData in gameData.balloonData)
-            {
-                  //TODO load ballons
-            }
-            
-            for (var i = 0; i < gameData.launcherData.Length; i++) 
-            {
-                  FindObjectsByType<SnowLauncher>(FindObjectsSortMode.None)[i].cooldown =  gameData.launcherData[i].cooldown;
-            }
       }
 }
