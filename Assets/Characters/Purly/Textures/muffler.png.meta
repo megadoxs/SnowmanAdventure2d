@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      muffler_0: -1410682302589607548
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

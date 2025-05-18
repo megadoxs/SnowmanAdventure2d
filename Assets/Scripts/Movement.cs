@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator animator;
+    private AudioSource audioSource;
     private float horizontalInput;
     private bool isJumpPressed;
     private bool isGrounded;
@@ -20,6 +21,7 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -29,6 +31,7 @@ public class Movement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             isJumpPressed = true;
+            audioSource.Play();
         }
     }
 
