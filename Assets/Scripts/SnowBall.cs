@@ -17,7 +17,7 @@ public class SnowBall : MonoBehaviour
     {
         if (other.collider.CompareTag("Player"))
         {
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<Movement>().Die();
             Time.timeScale = 0;
         }
     }

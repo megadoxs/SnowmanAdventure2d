@@ -20,6 +20,12 @@ public class Score : MonoBehaviour
         score++;
         scoreText.text = "Score: " + score;
     }
+    
+    public void RemoveScore()
+    {
+        score -= 3;
+        scoreText.text = "Score: " + score;
+    }
 
     public int GetScore()
     {

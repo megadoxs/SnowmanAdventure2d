@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = System.Random;
 
 public class PlatformGenerator : MonoBehaviour
 {
     [SerializeField] 
-    private GameObject ballon;
+    private GameObject yellowBallon;
+    
+    [SerializeField] 
+    private GameObject blackBallon;
     
     [SerializeField] 
     private Tilemap ground;
@@ -87,16 +91,32 @@ public class PlatformGenerator : MonoBehaviour
                 }
             }
         }
-        
-        SpriteRenderer balloonRenderer = ballon.GetComponent<SpriteRenderer>();
-        if (ballon != null)
-        {
-            Vector3Int balloonCell = position + new Vector3Int(width/2, 1, 0);
-            Vector3 worldPos = ground.CellToWorld(balloonCell) + ground.tileAnchor;
-            worldPos.y += balloonRenderer.bounds.size.y / 2;
-            worldPos.x -= balloonRenderer.bounds.size.x / 2;
 
-            Instantiate(ballon, worldPos, Quaternion.identity);
+        if (UnityEngine.Random.Range(0, 5) < 4)
+        {
+            SpriteRenderer balloonRenderer = yellowBallon.GetComponent<SpriteRenderer>();
+            if (yellowBallon != null)
+            {
+                Vector3Int balloonCell = position + new Vector3Int(width/2, 1, 0);
+                Vector3 worldPos = ground.CellToWorld(balloonCell) + ground.tileAnchor;
+                worldPos.y += balloonRenderer.bounds.size.y / 2;
+                worldPos.x -= balloonRenderer.bounds.size.x / 2;
+
+                Instantiate(yellowBallon, worldPos, Quaternion.identity);
+            }
+        }
+        else
+        {
+            SpriteRenderer balloonRenderer = blackBallon.GetComponent<SpriteRenderer>();
+            if (blackBallon != null)
+            {
+                Vector3Int balloonCell = position + new Vector3Int(width/2, 1, 0);
+                Vector3 worldPos = ground.CellToWorld(balloonCell) + ground.tileAnchor;
+                worldPos.y += balloonRenderer.bounds.size.y / 2;
+                worldPos.x -= balloonRenderer.bounds.size.x / 2;
+
+                Instantiate(blackBallon, worldPos, Quaternion.identity);
+            }
         }
         
         Vector3 minWorld = ground.CellToWorld(position) + new Vector3(0, ground.cellSize.y, 0);
